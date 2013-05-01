@@ -2168,6 +2168,7 @@ projects/RTC/Makefile
 projects/PowerAwareCompiler/Makefile
 projects/ManyCoreRuntime/Makefile
 projects/ManyCoreRuntime/docs/Makefile
+projects/StencilManyCore/Makefile
 projects/minitermite/Makefile
 projects/minitermite/Doxyfile
 projects/minitermite/src/minitermite/minitermite.h

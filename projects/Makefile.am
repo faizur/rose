@@ -41,6 +41,7 @@ SUBDIRS = \
 	RTC \
 	PowerAwareCompiler \
 	ManyCoreRuntime \
+	StencilManyCore \
 	Fortran_to_C \
         minitermite \
 	mint \
