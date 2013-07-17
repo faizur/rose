@@ -1973,7 +1973,7 @@ T* SageBuilder::buildUnaryExpression_nfi(SgExpression* operand) {
   { \
      return SageBuilder::buildUnaryExpression_nfi<Sg##suffix>(op); \
   } \
-  Sg##suffix* SageBuilder::build##suffix(SgExpression* op) \
+  ROSE_DLL_API Sg##suffix* SageBuilder::build##suffix(SgExpression* op) \
   { \
      return SageBuilder::buildUnaryExpression<Sg##suffix>(op); \
   }
@@ -2181,11 +2181,11 @@ T* SageBuilder::buildBinaryExpression_nfi(SgExpression* lhs, SgExpression* rhs)
 
 }
 #define BUILD_BINARY_DEF(suffix) \
-  Sg##suffix* SageBuilder::build##suffix##_nfi(SgExpression* lhs, SgExpression* rhs) \
+  ROSE_DLL_API Sg##suffix* SageBuilder::build##suffix##_nfi(SgExpression* lhs, SgExpression* rhs) \
   { \
      return buildBinaryExpression_nfi<Sg##suffix>(lhs, rhs); \
   } \
-  Sg##suffix* SageBuilder::build##suffix(SgExpression* lhs, SgExpression* rhs) \
+  ROSE_DLL_API Sg##suffix* SageBuilder::build##suffix(SgExpression* lhs, SgExpression* rhs) \
   { \
      return buildBinaryExpression<Sg##suffix>(lhs, rhs); \
   }
@@ -5630,7 +5630,7 @@ SgClassDeclaration * SageBuilder::buildClassDeclaration_nfi(const SgName& name, 
        // of source position that would be more precise.  FIXME.
        // setOneSourcePositionNull(nondefdecl);
           setOneSourcePositionForTransformation(nondefdecl);
-          ROSE_ASSERT (nondefdecl->get_startOfConstruct() != __null);
+          ROSE_ASSERT (nondefdecl->get_startOfConstruct() != NULL);
 
           nondefdecl->set_firstNondefiningDeclaration(nondefdecl);
           nondefdecl->set_definingDeclaration(defdecl);

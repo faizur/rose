@@ -32,11 +32,13 @@ using namespace OmpSupport;
 
 const string FileHelper::pathDelimiter = "/";
 
+/* These symbols are defined when we include sage_support.h above - ZG (4/5/2013)
 // DQ (9/17/2009): This appears to only be required for the GNU 4.1.x compiler (not for any earlier or later versions).
 extern const std::string ROSE_GFORTRAN_PATH;
 
 // CER (10/11/2011): Added to allow OFP jar file to depend on version number based on date.
 extern const std::string ROSE_OFP_VERSION_STRING;
+*/
 
 #ifdef _MSC_VER
 // DQ (11/29/2009): MSVC does not support sprintf, but "_snprintf" is equivalent
@@ -4054,7 +4056,7 @@ SgFile::compileOutput ( vector<string>& argv, int fileNameIndex )
                   if (itInput != compilerCmdLine.end()) {
                           itInput++;
                           string destDirName = *itInput;
-                          if(mkdir(destDirName.c_str(),0777) == -1) {
+                          if(!boost::filesystem::create_directory(destDirName.c_str())) {
                                   if(errno != EEXIST) {
                                           printf ("Can't create javac destination folder\n");
                                           ROSE_ASSERT(false);
@@ -4505,8 +4507,15 @@ int SgProject::link ( const std::vector<std::string>& argv, std::string linkerNa
 //     There will be no SgFile at all in this case but we still want to append relevant linking options for OpenMP
      if( SageInterface::getProject()->get_openmp_linking())
      {
-
+// Sara Royuela 12/10/2012:  Add GCC version check
 #ifdef USE_ROSE_GOMP_OPENMP_LIBRARY
+#if (__GNUC__ < 4 || \
+    (__GNUC__ == 4 && (__GNUC_MINOR__ < 4)))
+#warning "GNU version lower than expected"    
+        printf("GCC version must be 4.4.0 or later when linking with GOMP OpenMP Runtime Library \n(OpenMP tasking calls are not implemented in previous versions)\n");
+        ROSE_ASSERT(false);
+#endif
+
        // add libxomp.a , Liao 6/12/2010
        string xomp_lib_path(ROSE_INSTALLATION_PATH);
        ROSE_ASSERT (xomp_lib_path.size() != 0);
